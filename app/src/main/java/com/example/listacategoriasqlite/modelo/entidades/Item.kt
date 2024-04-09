@@ -1,4 +1,7 @@
 package com.example.listacategoriasqlite.modelo.entidades
 
-class Item {
+import java.io.Serializable
+
+class Item (var accion: String, var activo: Boolean): Serializable {
+    var idItem = ""
 }
