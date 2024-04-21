@@ -1,6 +1,7 @@
 package com.example.listacategoriasqlite.modelo.interfaces
 
 import com.example.listacategoriasqlite.modelo.entidades.Categoria
+import com.example.listacategoriasqlite.modelo.entidades.Tarea
 
 interface InterfaceDaoCategorias: InterfaceDao {
     //CRUD
@@ -8,7 +9,7 @@ interface InterfaceDaoCategorias: InterfaceDao {
     fun addCategoria (ca: Categoria)
     //leer Todas las categorias
     fun getCategorias(): MutableList<Categoria>
-    //leer Todas las tareas de una categoria
+    //leer una categoria en concreto
     fun getCategoria(nombre: String): Categoria?
     //actualizar
     fun updateCategoria(caAnt: Categoria, caNue: Categoria)

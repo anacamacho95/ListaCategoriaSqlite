@@ -24,4 +24,8 @@ interface InterfaceDaoTareas :InterfaceDao{
     fun updateItem(ca: Categoria, ta: Tarea,iteAnt: Item, iteNue: Item)
     //borrar
     fun deleteItem (ca: Categoria ,ta: Tarea, ite: Item)
+
+    //NºItems
+    fun getNItems(ca: Categoria, ta: Tarea): Int
+
 }

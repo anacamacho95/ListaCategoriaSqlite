@@ -8,32 +8,34 @@ class BDCatSqlite (private val context: Context){
     val conexion= BDSqlite(context)
 
     fun borrarArchivos() {
-        val sql1="DROP TABLE Alimento"
-        val sql2="DROP TABLE Ingrediente"
+        val sql1="DROP TABLE Categoria"
+        val sql2="DROP TABLE Tarea"
+        val sql3="DROP TABLE Item"
         val db=conexion.getWritableDatabase();
         db.execSQL(sql1);
         db.execSQL(sql2);
+        db.execSQL(sql3);
         conexion.close();
     }
 
 }
 class BDSqlite(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     val TABLA_CATEGORIA = "CREATE TABLE Categoria (" +
-            "idCategoria INTEGER PRIMARY KEY AUTOINCREMENT);"
+            "idCategoria INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "nombre TEXT);"
 
     val TABLA_TAREA = "CREATE TABLE Tarea (" +
-            "idTarea INTEGER NOT NULL)" +
-            "idCategoriaTarea INTEGER NOT NULL"+
-            "PRIMARY KEY (idTarea, idCategoriaTarea)," +
-            "FOREIGN KEY(idTarea) REFERENCES Categoria(idCategoria)," +
+            "idTarea INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "idCategoriaTarea INTEGER NOT NULL," +
+            "nombre TEXT," +
             "FOREIGN KEY(idCategoriaTarea) REFERENCES Categoria(idCategoria));"
 
     val TABLA_ITEM= "CREATE TABLE Item (" +
-            "idItem INTEGER NOT NULL)" +
-            "idTareaItem INTEGER NOT NULL"+
-            "PRIMARY KEY (idItem, idTareaItem)," +
-            "FOREIGN KEY(idItem) REFERENCES Categoria(idTarea)," +
-            "FOREIGN KEY(idTareaItem) REFERENCES Categoria(idTarea));"
+            "idItem INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "idTareaItem INTEGER NOT NULL," +
+            "accion TEXT," +
+            "activo INTEGER," +
+            "FOREIGN KEY(idTareaItem) REFERENCES Tarea(idTarea));"
 
 
     val SQL_DELETE_ENTRIES=""
