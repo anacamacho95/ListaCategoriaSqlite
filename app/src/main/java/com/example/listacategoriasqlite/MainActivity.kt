@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         daoTarea.createConexion(conexion)
         daoCategoria.createConexion(conexion)
 
-        //conexion.borrarArchivos()
+       // conexion.borrarArchivos()
         Log.d("pruebas", " -- Datos previos eliminados --")
 
         pruebas()

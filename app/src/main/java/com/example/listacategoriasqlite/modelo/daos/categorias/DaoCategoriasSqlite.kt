@@ -23,8 +23,12 @@ class DaoCategoriasSqlite: InterfaceDaoCategorias {
             put("nombre", ca.nombre)
         }
         */
+        try{
+            db.insert("Categoria", null, values)
+        }catch(e:Exception){
+            val n=0
+        }
 
-        db.insert("Categoria", null, values)
         conexion.close()
     }
 
@@ -37,9 +41,9 @@ class DaoCategoriasSqlite: InterfaceDaoCategorias {
         if (cursor.moveToFirst()) {
             do {
                 val categoria = Categoria(
-                    cursor.getString(2)
+                    cursor.getString(1)
                 )
-                categoria.idCategoria=cursor.getInt(1)
+                categoria.idCategoria=cursor.getInt(0)
 
                 lista.add(categoria)
             } while (cursor.moveToNext())

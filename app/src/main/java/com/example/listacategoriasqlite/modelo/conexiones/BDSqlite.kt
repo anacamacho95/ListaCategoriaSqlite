@@ -12,10 +12,17 @@ class BDCatSqlite (private val context: Context){
         val sql2="DROP TABLE Tarea"
         val sql3="DROP TABLE Item"
         val db=conexion.getWritableDatabase();
-        db.execSQL(sql1);
-        db.execSQL(sql2);
-        db.execSQL(sql3);
-        conexion.close();
+        try{
+            db.execSQL(sql1);
+            db.execSQL(sql2);
+            db.execSQL(sql3);
+        }catch(e:Exception){}
+        finally {
+            conexion.close();
+        }
+
+
+
     }
 
 }
