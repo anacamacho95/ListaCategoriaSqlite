@@ -1,16 +1,15 @@
 package com.example.listacategoriasqlite.modelo.interfaces
 
 import com.example.listacategoriasqlite.modelo.entidades.Categoria
-import com.example.listacategoriasqlite.modelo.entidades.Tarea
 
-interface InterfaceDaoCategorias: InterfaceDao {
+interface InterfaceDaoCategorias: InterfaceDaoConexion {
     //CRUD
     //crear
     fun addCategoria (ca: Categoria)
     //leer Todas las categorias
     fun getCategorias(): MutableList<Categoria>
-    //leer una categoria en concreto
-    fun getCategoria(nombre: String): Categoria?
+    //obtener el objeto Categoria
+    fun getCategoria (ca: Categoria): Categoria?
     //actualizar
     fun updateCategoria(caAnt: Categoria, caNue: Categoria)
     //borrar

@@ -47,6 +47,24 @@ class DaoTareasSqlite:InterfaceDaoTareas {
         return listaTareas
     }
 
+    override fun getTarea(ta: Tarea): Tarea? {
+        var tarea: Tarea? = null
+
+        val query = "SELECT * FROM Tarea WHERE idTarea = ?"
+        val selectionArgs = arrayOf(ta.idTarea.toString())
+
+        val db = conexion.readableDatabase
+        val cursor = db.rawQuery(query, selectionArgs)
+
+        if (cursor.moveToFirst()) {
+            tarea = Tarea(cursor.getString(2)) // El índice 2 corresponde a la columna 'nombre' en la tabla 'Tarea'
+            tarea.idTarea = cursor.getInt(0) // El índice 0 corresponde a la columna 'idTarea'
+        }
+
+        cursor.close()
+
+        return tarea    }
+
     override fun updateNombreTarea(ca: Categoria, taAnt: Tarea, taNue: Tarea) {
         val db = conexion.writableDatabase
         val values = ContentValues().apply {
@@ -112,6 +130,26 @@ class DaoTareasSqlite:InterfaceDaoTareas {
 
         cursorItems.close()
         return listaItems
+    }
+
+    override fun getItem(it: Item): Item? {
+        var item: Item? = null
+
+        val query = "SELECT * FROM Item WHERE idItem = ?"
+        val selectionArgs = arrayOf(it.idItem.toString())
+
+        val db = conexion.readableDatabase
+        val cursor = db.rawQuery(query, selectionArgs)
+
+        if (cursor.moveToFirst()) {
+            item = Item(cursor.getString(2),
+                cursor.getInt(3) == 1) // Los índices 2 y 3 corresponden a las columnas 'accion' y 'activo'
+            item.idItem = cursor.getInt(0) // El índice 0 corresponde a la columna 'idItem'
+        }
+
+        cursor.close()
+
+        return item
     }
 
     override fun updateItem(ca: Categoria, ta: Tarea, iteAnt: Item, iteNue: Item) {

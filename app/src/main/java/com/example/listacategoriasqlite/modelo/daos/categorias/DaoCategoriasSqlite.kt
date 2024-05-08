@@ -52,17 +52,18 @@ class DaoCategoriasSqlite: InterfaceDaoCategorias {
         return lista
     }
 
-    override fun getCategoria(nombre: String): Categoria? {
+
+    override fun getCategoria(ca: Categoria): Categoria? {
         var categoria: Categoria? = null
 
         val query = "SELECT * FROM Categoria WHERE nombre = ?"
-        val selectionArgs = arrayOf(nombre)
+        val selectionArgs = arrayOf(ca.nombre)
 
         val db = conexion.readableDatabase
         val cursor = db.rawQuery(query, selectionArgs)
 
         if (cursor.moveToFirst()) {
-            categoria = Categoria(nombre)
+            categoria = Categoria(ca.nombre)
             categoria.idCategoria = cursor.getInt(0) // obtenemos el id de la categoría
 
             val queryTareas = "SELECT * FROM Tarea WHERE idCategoriaTarea = ?"
@@ -82,7 +83,8 @@ class DaoCategoriasSqlite: InterfaceDaoCategorias {
 
                     if (cursorItems.moveToFirst()) {
                         do {
-                            val item = Item(cursorItems.getString(1), cursorItems.getInt(2) == 1) // accion e activo del item
+                            val item = Item(cursorItems.getString(1),
+                                cursorItems.getInt(2) == 1) // accion e activo del item
                             item.idItem = cursorItems.getInt(0) // id del item
                             tarea.items.add(item)
                         } while (cursorItems.moveToNext())
