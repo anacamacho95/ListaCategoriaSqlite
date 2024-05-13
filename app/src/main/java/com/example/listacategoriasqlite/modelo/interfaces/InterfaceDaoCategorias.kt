@@ -9,9 +9,9 @@ interface InterfaceDaoCategorias: InterfaceDaoConexion {
     //leer Todas las categorias
     fun getCategorias(): MutableList<Categoria>
     //obtener el objeto Categoria
-    fun getCategoria (ca: Categoria): Categoria?
+    fun getCategoria (nombre: String): Categoria
     //actualizar
-    fun updateCategoria(caAnt: Categoria, caNue: Categoria)
+    fun updateCategoria(ca: Categoria)
     //borrar
     fun deleteCategoria (ca: Categoria)
 }

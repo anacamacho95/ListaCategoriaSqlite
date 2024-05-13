@@ -7,29 +7,29 @@ import com.example.listacategoriasqlite.modelo.entidades.Tarea
 interface InterfaceDaoTareas :InterfaceDaoConexion{
     //CRUD TAREAS
     //crear
-    fun addTarea (ca: Categoria, ta: Tarea)
+    fun addTarea (ta: Tarea)
     //leer Todas las tareas
-    fun getTareas(ca: Categoria): MutableList<Tarea>
+    fun getTareas(id: Int): MutableList<Tarea>
     //obtener el objeto Tarea
-    fun getTarea (ta: Tarea): Tarea?
+    fun getTarea (nombre: String): Tarea
     //actualizar
-    fun updateNombreTarea(ca: Categoria, taAnt: Tarea, taNue: Tarea)
+    fun updateNombreTarea(ta: Tarea)
     //borrar
-    fun deleteTarea (ca: Categoria, ta: Tarea)
+    fun deleteTarea (ta: Tarea)
 
     //CRUD ITEMS
     //crear
-    fun addItem (ca: Categoria, ta: Tarea, ite: Item)
+    fun addItem (ite: Item)
     //leer Todos los items
-    fun getItems(ca: Categoria, ta: Tarea): MutableList<Item>
+    fun getItems(id: Int): MutableList<Item>
     //obtener el objeto Item
-    fun getItem (it: Item): Item?
+    fun getItem (nombre: String): Item
     //actualizar item
-    fun updateItem(ca: Categoria, ta: Tarea,iteAnt: Item, iteNue: Item)
+    fun updateItem(ite: Item)
     //borrar
-    fun deleteItem (ca: Categoria ,ta: Tarea, ite: Item)
+    fun deleteItem (ite: Item)
 
     //NºItems
-    fun getNItems(ca: Categoria, ta: Tarea): Int
+    fun getNItems(id: Int): Int
 
 }

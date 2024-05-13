@@ -53,64 +53,34 @@ class DaoCategoriasSqlite: InterfaceDaoCategorias {
     }
 
 
-    override fun getCategoria(ca: Categoria): Categoria? {
-        var categoria: Categoria? = null
+    override fun getCategoria(nombre: String): Categoria {
 
         val query = "SELECT * FROM Categoria WHERE nombre = ?"
-        val selectionArgs = arrayOf(ca.nombre)
+        val selectionArgs = arrayOf(nombre)
 
         val db = conexion.readableDatabase
         val cursor = db.rawQuery(query, selectionArgs)
 
         if (cursor.moveToFirst()) {
-            categoria = Categoria(ca.nombre)
-            categoria.idCategoria = cursor.getInt(0) // obtenemos el id de la categoría
-
-            val queryTareas = "SELECT * FROM Tarea WHERE idCategoriaTarea = ?"
-            val selectionArgsTareas = arrayOf(categoria!!.idCategoria.toString())
-
-            val cursorTareas = db.rawQuery(queryTareas, selectionArgsTareas)
-
-            if (cursorTareas.moveToFirst()) {
-                do {
-                    val tarea = Tarea(cursorTareas.getString(1)) // nombre de la tarea
-                    tarea.idTarea = cursorTareas.getInt(0) // id de la tarea
-
-                    val queryItems = "SELECT * FROM Item WHERE idTareaItem = ?"
-                    val selectionArgsItems = arrayOf(tarea.idTarea.toString())
-
-                    val cursorItems = db.rawQuery(queryItems, selectionArgsItems)
-
-                    if (cursorItems.moveToFirst()) {
-                        do {
-                            val item = Item(cursorItems.getString(1),
-                                cursorItems.getInt(2) == 1) // accion e activo del item
-                            item.idItem = cursorItems.getInt(0) // id del item
-                            tarea.items.add(item)
-                        } while (cursorItems.moveToNext())
-                    }
-
-                    cursorItems.close()
-
-                    categoria.tareas.add(tarea)
-                } while (cursorTareas.moveToNext())
-            }
-
-            cursorTareas.close()
+            val categoria = Categoria(
+                cursor.getString(1)
+            )
+            categoria.idCategoria=cursor.getInt(0)
+            cursor.close()
+            return categoria
+        } else {
+            cursor.close()
+            return Categoria("Categoría no encontrada")
         }
-
-        cursor.close()
-
-        return categoria
     }
 
-    override fun updateCategoria(caAnt: Categoria, caNue: Categoria) {
+    override fun updateCategoria(ca: Categoria) {
         val db = conexion.writableDatabase
         val values = ContentValues().apply {
-            put("nombre", caNue.nombre)
+            put("nombre", ca.nombre)
         }
         val selection = "idCategoria = ?"
-        val selectionArgs = arrayOf(caAnt.idCategoria.toString())
+        val selectionArgs = arrayOf(ca.idCategoria.toString())
         db.update("Categoria", values, selection, selectionArgs)
         conexion.close()
     }

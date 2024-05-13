@@ -51,42 +51,42 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d("pruebas", " *** Obtengo Categoria Hogar *** ")
-        val obtHogar: Categoria? = daoCategoria.getCategoria(hogar)
-        Log.d("pruebas", obtHogar?.nombre ?: "no encontrada")
+        val obtHogar: Categoria = daoCategoria.getCategoria("Hogar")
+        Log.d("pruebas", obtHogar.toString())
 
         Log.d("pruebas", " *** Añado tareas a la categoria Hogar *** ")
-        var cocina = Tarea( "Cocina")
-        daoTarea.addTarea( hogar, cocina)
+        var cocina = Tarea("Cocina")
+        daoTarea.addTarea(cocina)
         var aseo = Tarea( "Aseo")
-        daoTarea.addTarea( hogar, aseo)
-        val tareasHogar1: List<Tarea> = daoTarea.getTareas(hogar)
+        daoTarea.addTarea(aseo)
+        val tareasHogar1: List<Tarea> = daoTarea.getTareas(daoCategoria.getCategoria("Hogar").idCategoria)
         tareasHogar1.forEach {
             Log.d("pruebas", it.nombre)
         }
 
         Log.d("pruebas", " *** Obtengo Tarea Cocina *** ")
-        val obtCocina: Tarea? = daoTarea.getTarea(cocina)
-        Log.d("pruebas", obtCocina?.nombre ?: "no encontrada")
+        val obtCocina: Tarea = daoTarea.getTarea("Cocina")
+        Log.d("pruebas", obtCocina.toString())
 
         Log.d("pruebas", " *** Añado items a la tarea Cocina *** ")
         var coc1 = Item("Hacer canelones", false)
-        daoTarea.addItem(hogar, cocina, coc1)
-        val itemsCocina: List<Item> = daoTarea.getItems(hogar, cocina)
+        daoTarea.addItem(coc1)
+        val itemsCocina: List<Item> = daoTarea.getItems(daoTarea.getTarea("Cocina").idTarea)
         itemsCocina.forEach{
             Log.d("pruebas", it.accion)
         }
-        Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(hogar,cocina))
+        Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(daoTarea.getTarea("Cocina").idTarea))
 
         Log.d("pruebas", " *** Obtengo Item Hacer Canelones *** ")
-        val obtCanelones: Item? = daoTarea.getItem(coc1)
-        Log.d("pruebas", obtCanelones?.accion + " - "+  obtCanelones?.activo ?: "no encontrada")
+        val obtCanelones: Item = daoTarea.getItem("Hacer canelones")
+        Log.d("pruebas", obtCanelones.toString())
 
         Log.d("pruebas", " *** Añado tareas a la categoria Viajes *** ")
         var playa = Tarea( "Playas")
-        daoTarea.addTarea( viajes, playa)
+        daoTarea.addTarea(playa)
         var mont = Tarea( "Montañas")
-        daoTarea.addTarea( viajes, mont)
-        val tareasViaje: List<Tarea> = daoTarea.getTareas(viajes)
+        daoTarea.addTarea(mont)
+        val tareasViaje: List<Tarea> = daoTarea.getTareas(daoCategoria.getCategoria("Viajes").idCategoria)
         tareasViaje.forEach {
             Log.d("pruebas", it.nombre)
         }
@@ -96,106 +96,109 @@ class MainActivity : AppCompatActivity() {
         for (categoria in muestraCategorias2) {
             Log.d("pruebas", "Categoría --> ${categoria.nombre}")
 
-            val tareas: List<Tarea> = daoTarea.getTareas(categoria)
+            val tareas: List<Tarea> = daoTarea.getTareas(categoria.idCategoria)
             for (tarea in tareas) {
                 Log.d("pruebas", "Tarea: ${tarea.nombre}")
 
-                val items: List<Item> = daoTarea.getItems(categoria,tarea)
+                val items: List<Item> = daoTarea.getItems(tarea.idTarea)
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(categoria,tarea))
+                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
         Log.d("pruebas", " *** Actualizo item de cocina (Canelones por lavavajillas) y Actualizo nombre de tarea Aseo por Habitación *** ")
-        var coc2 = Item("Poner lavavajillas", false)
-        daoTarea.updateItem(hogar,cocina,coc1,coc2)
+        var actualizoItem = daoTarea.getItem("Hacer canelones")
+        actualizoItem.accion="Poner lavavajillas"
+        daoTarea.updateItem(actualizoItem)
 
-        var habitacion = Tarea("Habitación")
-        daoTarea.updateNombreTarea(hogar,aseo,habitacion)
+        var actualizoTarea = daoTarea.getTarea("Aseo")
+        actualizoTarea.nombre="Habitación"
+        daoTarea.updateNombreTarea(actualizoTarea)
 
-        val tareasHogar2: List<Tarea> = daoTarea.getTareas(hogar)
+        val tareasHogar2: List<Tarea> = daoTarea.getTareas(daoCategoria.getCategoria("Hogar").idCategoria)
         for (tarea in tareasHogar2) {
             Log.d("pruebas", "Tarea: ${tarea.nombre}")
-            val items: List<Item> = daoTarea.getItems(hogar,tarea)
+            val items: List<Item> = daoTarea.getItems(tarea.idTarea)
             for (item in items) {
                 Log.d("pruebas", "- ${item.accion}")
             }
-            Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(hogar,tarea))
+            Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
         }
 
         Log.d("pruebas", " *** Actualizo nombre de categoria Hogar por Casa *** ")
-        var casa= Categoria("Casa")
-        daoCategoria.updateCategoria(hogar,casa)
+        var actualizoCategoria= daoCategoria.getCategoria("Hogar")
+        actualizoCategoria.nombre="Casa"
+        daoCategoria.updateCategoria(actualizoCategoria)
+
         val muestraCategorias3: List<Categoria> = daoCategoria.getCategorias()
         for (categoria in muestraCategorias3) {
             Log.d("pruebas", "Categoría --> ${categoria.nombre}")
 
-            val tareas: List<Tarea> = daoTarea.getTareas(categoria)
+            val tareas: List<Tarea> = daoTarea.getTareas(categoria.idCategoria)
             for (tarea in tareas) {
                 Log.d("pruebas", "Tarea: ${tarea.nombre}")
 
-                val items: List<Item> = daoTarea.getItems(categoria,tarea)
+                val items: List<Item> = daoTarea.getItems(tarea.idTarea)
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(categoria,tarea))
+                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
-
         Log.d("pruebas", " *** Elimino item (lavavajillas) de la tarea Cocina *** ")
-        daoTarea.deleteItem(casa,cocina,coc2)
+        daoTarea.deleteItem(daoTarea.getItem("Poner lavavajillas"))
         val muestraCategorias4: List<Categoria> = daoCategoria.getCategorias()
         for (categoria in muestraCategorias4) {
             Log.d("pruebas", "Categoría --> ${categoria.nombre}")
 
-            val tareas: List<Tarea> = daoTarea.getTareas(categoria)
+            val tareas: List<Tarea> = daoTarea.getTareas(categoria.idCategoria)
             for (tarea in tareas) {
                 Log.d("pruebas", "Tarea: ${tarea.nombre}")
 
-                val items: List<Item> = daoTarea.getItems(categoria,tarea)
+                val items: List<Item> = daoTarea.getItems(tarea.idTarea)
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(categoria,tarea))
+                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
         Log.d("pruebas", " *** Elimino tarea (Cocina) de la Categoria Casa *** ")
-        daoTarea.deleteTarea(casa,cocina)
+        daoTarea.deleteTarea(daoTarea.getTarea("Cocina"))
         val muestraCategorias5: List<Categoria> = daoCategoria.getCategorias()
         for (categoria in muestraCategorias5) {
             Log.d("pruebas", "Categoría --> ${categoria.nombre}")
 
-            val tareas: List<Tarea> = daoTarea.getTareas(categoria)
+            val tareas: List<Tarea> = daoTarea.getTareas(categoria.idCategoria)
             for (tarea in tareas) {
                 Log.d("pruebas", "Tarea: ${tarea.nombre}")
 
-                val items: List<Item> = daoTarea.getItems(categoria,tarea)
+                val items: List<Item> = daoTarea.getItems(tarea.idTarea)
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(categoria,tarea))
+                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
         Log.d("pruebas", " *** Elimino categoria Casa *** ")
-        daoCategoria.deleteCategoria(casa)
+        daoCategoria.deleteCategoria(daoCategoria.getCategoria("Casa"))
         val muestraCategorias6: List<Categoria> = daoCategoria.getCategorias()
         for (categoria in muestraCategorias6) {
             Log.d("pruebas", "Categoría --> ${categoria.nombre}")
 
-            val tareas: List<Tarea> = daoTarea.getTareas(categoria)
+            val tareas: List<Tarea> = daoTarea.getTareas(categoria.idCategoria)
             for (tarea in tareas) {
                 Log.d("pruebas", "Tarea: ${tarea.nombre}")
 
-                val items: List<Item> = daoTarea.getItems(categoria,tarea)
+                val items: List<Item> = daoTarea.getItems(tarea.idTarea)
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(categoria,tarea))
+                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
     }
